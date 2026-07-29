@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px;
+  background: darkgrey;
+  font-family: "Segoe UI", sans-serif;
+  color: darkslategrey;
+}
+
+.todo-app {
+  width: 100%;
+  max-width: 420px;
+  background: whitesmoke;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+h1 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+#taskInput {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid darkslategray;
+  border-radius: 8px;
+  outline: none;
+}
+
+#taskInput:focus {
+  border-color: #3a6b5c;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#addBtn {
+  padding: 10px 16px;
+  background: #3a6b5c;
+  color: white;
+}
+
+#addBtn:hover {
+  background: #2f5648;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.task p {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+}
+
+.task button {
+  padding: 5px 10px;
+  background: #eee;
+}
+
+.delete:hover {
+  color: red;
+}
+
+.empty {
+  text-align: center;
+  color: gray;
+  margin-top: 20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="todo-app">
+
+<h1>To-Do List</h1>
+
+<div class="input-row">
+<input id="taskInput" placeholder="Enter task">
+<button id="addBtn">Add</button>
+</div>
+
+<div id="taskList"></div>
+
+</div>
+
+
+<script>
+
+(function(){
+
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+    let editIndex = null;
+
+    const inputtask = document.getElementById("taskInput");
+    const addbtn = document.getElementById("addBtn");
+    const todolist = document.getElementById("taskList");
+
+
+    function saveTasks(){
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }
+
+
+    function rendertask(){
+
+        todolist.innerHTML = "";
+
+        if(todos.length === 0){
+            todolist.innerHTML = `<p class="empty">No tasks added</p>`;
+            return;
+        }
+
+
+        todos.forEach(function(task,index){
+
+            const todoitem = document.createElement("div");
+            todoitem.className = "task";
+
+
+            const p = document.createElement("p");
+            p.textContent = task;
+
+
+            const editbtn = document.createElement("button");
+            editbtn.textContent = "Edit";
+
+
+            const deletebtn = document.createElement("button");
+            deletebtn.textContent = "Delete";
+            deletebtn.className = "delete";
+
+
+            editbtn.addEventListener("click",function(){
+
+                inputtask.value = task;
+
+                editIndex = index;
+
+                addbtn.textContent = "Update";
+
+                inputtask.focus();
+
+            });
+
+
+
+            deletebtn.addEventListener("click",function(){
+
+                todos.splice(index,1);
+
+                saveTasks();
+
+                rendertask();
+
+            });
+
+
+
+            todoitem.append(p,editbtn,deletebtn);
+
+            todolist.prepend(todoitem);
+
+        });
+
+    }
+
+
+
+    function addtodo(){
+
+        const task = inputtask.value.trim();
+
+
+        if(task === ""){
+            return;
+        }
+
+
+        if(editIndex !== null){
+
+            todos[editIndex] = task;
+
+            editIndex = null;
+
+            addbtn.textContent = "Add";
+
+        }
+
+        else{
+
+            todos.unshift(task);
+
+        }
+
+
+        saveTasks();
+
+        rendertask();
+
+
+        inputtask.value = "";
+
+        inputtask.focus();
+
+    }
+
+
+
+    addbtn.addEventListener("click",addtodo);
+
+
+    inputtask.addEventListener("keydown",function(e){
+
+        if(e.key === "Enter"){
+            addtodo();
+        }
+
+    });
+
+
+
+    rendertask();
+
+
+})();
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        h1{
+            font-family: Arial, Helvetica, sans-serif;
+            color: black;
+        }
+        #username{
+            width: 250px;
+            height: 30px;
+            padding: 0.25rem;
+            outline: none;
+        }
+        #username:focus{
+            outline: none;
+            border: 2px solid black;
+        }
+        #password{
+            width: 250px;
+            height: 30px;
+            padding: 0.25rem;
+            outline: none;
+        }
+        #password:focus{
+            outline: none;
+            border: 2px solid black;
+        }
+        #login{
+            width: 258px;
+            height: 36px;
+            padding: 0.25rem;
+            outline: none;
+        }
+        body{
+            background: linear-gradient(135deg, #141E30, #243B55);
+        }
+        #outerformdiv{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #formdiv{
+            background: rgba(255,255,255,0.40);
+            border: 1px solid rgba(255,255,255,0.3);
+            width: 350px;
+            height: 500px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+            font-size: 10px;
+        }
+        body{
+            background-image: url("JETT KNIVES.png");
+            background-size: cover;
+        }
+        #formdiv{
+            transform: translate(-250px);
+        }
+
+        .box1{
+            transition: 0.3s ease;
+        }
+        .box1:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+        .box2{
+            transition: 0.3s ease;
+        }
+        .box2:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        button{
+            width: 50px;
+            height: 50px;
+            border-radius: 25%;
+            border: none;
+            background: black;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            transition: 0.3s;
+        }
+        .box3{
+            text-align: center;
+        }
+
+        button:hover{
+            background: darkslategray;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+        input::placeholder{
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="outerformdiv">
+        <div id="formdiv">
+
+            <h1>Sign in</h1>
+
+            <form>
+                <div class="box1">
+                    <input type="text" name="text" placeholder="USERNAME" required id="username">
+                </div>
+
+                <br><br>
+
+                <div class="box2">
+                    <input type="password" name="password" placeholder="PASSWORD" required id="password">
+                </div>
+
+                <br><br>
+
+                <div class="box3">
+                <button type="submit">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                </div>
+            </form>
+            <br>
+            <b><a href="https://www.google.com">CAN'T SIGN IN?</a></b>
+            <br>
+            <b><a href="https://www.google.com">CREATE ACCOUNT</a></b>
+        </div>
+    </div>
+</body>
+</html>

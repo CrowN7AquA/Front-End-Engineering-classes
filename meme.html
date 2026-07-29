@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Meme Troll</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+
+body{
+
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#222;
+
+}
+
+
+.box{
+
+    width:300px;
+    padding:30px;
+    background:white;
+    border-radius:15px;
+    text-align:center;
+    position:absolute;
+    box-shadow:0 5px 20px rgba(0,0,0,0.4);
+
+}
+
+
+h1{
+
+    margin-bottom:20px;
+
+}
+
+
+button{
+
+    padding:12px 25px;
+    border:none;
+    background:#ff5722;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+
+}
+
+
+button:hover{
+
+    background:#e64a19;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="box" id="box">
+
+
+<h1>😂 Meme Troll</h1>
+
+
+<button id="generate">
+Generate
+</button>
+
+
+</div>
+
+
+
+<script>
+
+
+const box = document.getElementById("box");
+
+const button = document.getElementById("generate");
+
+
+
+button.addEventListener("mouseover",function(){
+
+
+    let x = Math.random() * 70;
+
+    let y = Math.random() * 70;
+
+
+    box.style.left = x + "vw";
+
+    box.style.top = y + "vh";
+
+
+});
+
+
+
+</script>
+
+
+</body>
+
+</html>

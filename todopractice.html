@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        div1{
+            background-color: lightcoral;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="div1">
+        <input type="text">
+        <button id="bu1"> Save </button>
+        <br>
+        <p>Hello! My name is Bhavin Ahuja.</p>
+        <br>
+        <button id="but2">Delete</button>
+        <button id="but3">Edit</button>
+    </div>
+    <script>
+
+        const btn1 = document.getElementById("but1");
+        btn1.addEventListener("click" , function(){
+        document.body.classList.toggle("dark");
+        });
+    </script>
+</body>
+</html>
+
