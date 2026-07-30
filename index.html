@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Weather X Pro | Ultimate Weather App</title>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+<!-- Leaflet for Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- html-to-image for sharing -->
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo"><span class="logo-icon">⛅</span><span>Weather X Pro</span></div>
+        <div class="search-section">
+            <input type="text" id="cityInput" placeholder="Search city...">
+            <select id="languageSelect">
+                <option value="en">🌐 English</option>
+                <option value="hi">🇮🇳 हिन्दी</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="pt">🇵🇹 Português</option>
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="ar">🇸🇦 العربية</option>
+                <option value="bn">🇧🇩 বাংলা</option>
+                <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
+                <option value="mr">🇮🇳 मराठी</option>
+                <option value="ta">🇮🇳 தமிழ்</option>
+                <option value="te">🇮🇳 తెలుగు</option>
+                <option value="tr">🇹🇷 Türkçe</option>
+                <option value="id">🇮🇩 Indonesia</option>
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="pl">🇵🇱 Polski</option>
+                <option value="nl">🇳🇱 Nederlands</option>
+                <option value="sv">🇸🇪 Svenska</option>
+                <option value="th">🇹🇭 ไทย</option>
+                <option value="el">🇬🇷 Ελληνικά</option>
+                <option value="cs">🇨🇿 Čeština</option>
+                <option value="hu">🇭🇺 Magyar</option>
+                <option value="ro">🇷🇴 Română</option>
+            </select>
+            <button id="searchBtn" class="search-btn">🔍 Search</button>
+        </div>
+        <div class="action-buttons">
+            <button id="userBtn" class="user-btn">👤</button>
+            <button id="themeBtn" class="theme-btn">🌙</button>
+            <button id="menuBtn" class="menu-btn">☰</button>
+        </div>
+    </div>
+</header>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-content">
+        <div id="userProfile" class="user-profile" style="display:none">
+            <div class="profile-icon">👤</div>
+            <div class="profile-name" id="profileName">Guest</div>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+        </div>
+        <div class="weather-icon-large" id="weatherIcon">⛅</div>
+        <h2 id="location">--</h2>
+        <div class="temp-container">
+            <h1 id="temp">--°C</h1>
+            <p id="description">Loading...</p>
+            <p id="aiMessage" class="ai-text"></p>
+        </div>
+        <div class="weather-message" id="weatherMessage">
+            <span>💡</span>
+            <p id="smartMessage">Loading insights...</p>
+        </div>
+        
+        <!-- 12 MODERN WEATHER METRICS -->
+        <div class="weather-meta">
+            <div class="meta-item"><span>💧 Humidity</span><span id="humidity" class="meta-value">--%</span></div>
+            <div class="meta-item"><span>💨 Wind Speed</span><span id="wind" class="meta-value">-- km/h</span></div>
+            <div class="meta-item"><span>🌡️ Feels Like</span><span id="feelsLike" class="meta-value">--°C</span></div>
+            <div class="meta-item"><span>💨 Wind Gusts</span><span id="windGust" class="meta-value">-- km/h</span></div>
+            <div class="meta-item"><span>🌍 Air Quality (AQI)</span><span id="airQuality" class="meta-value">--</span></div>
+            <div class="meta-item"><span>☀️ UV Index</span><span id="uvIndex" class="meta-value">--</span></div>
+            <div class="meta-item"><span>🌅 Sunrise</span><span id="sunrise" class="meta-value">--:--</span></div>
+            <div class="meta-item"><span>🌇 Sunset</span><span id="sunset" class="meta-value">--:--</span></div>
+            <div class="meta-item"><span>👁️ Visibility</span><span id="visibility" class="meta-value">-- km</span></div>
+            <div class="meta-item"><span>⏱️ Pressure</span><span id="pressure" class="meta-value">-- hPa</span></div>
+            <div class="meta-item"><span>🌧️ Rain Chance</span><span id="rainChance" class="meta-value">--%</span></div>
+            <div class="meta-item"><span>💧 Dew Point</span><span id="dewPoint" class="meta-value">--°C</span></div>
+        </div>
+        
+        <div class="favorites-section" id="favoritesSection">
+            <h4>⭐ Favorites</h4>
+            <div id="favoritesList"></div>
+        </div>
+        <button onclick="addFavoriteFromCurrent()" style="width:100%; margin-top:15px; padding:10px; background:linear-gradient(135deg,#f59e0b,#d97706); border:none; border-radius:12px; color:white; cursor:pointer; font-weight:600;">⭐ Save Current City to Favorites</button>
+    </div>
+</div>
+
+<div id="map"></div>
+
+<div class="chart-container">
+    <div class="chart-header">
+        <h3>📊 Weather Forecast</h3>
+        <p id="chartCity">7-Day Temperature Trend</p>
+        <div class="chart-toggle-buttons">
+            <button id="chartTempBtn" class="chart-toggle active">🌡️ Temperature</button>
+            <button id="chartHumidityBtn" class="chart-toggle">💧 Humidity</button>
+            <button id="chartPrecipBtn" class="chart-toggle">🌧️ Precipitation</button>
+            <button id="chartPastBtn" class="chart-toggle">📅 Past 7 Days</button>
+            <button id="chartFutureBtn" class="chart-toggle active">📈 Future 7 Days</button>
+        </div>
+    </div>
+    <canvas id="weatherChart" style="max-height:180px"></canvas>
+    <button id="shareBtn" style="margin-top:10px; width:100%; padding:8px; background:#38bdf8; border:none; border-radius:10px; color:white; cursor:pointer;">📤 Share Weather</button>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header"><h2 id="modalTitle">Create Account</h2><button class="close-btn" id="closeModal">&times;</button></div>
+        <div class="auth-tabs">
+            <button class="tab-btn active" id="signupTab">Sign Up</button>
+            <button class="tab-btn" id="signinTab">Sign In</button>
+        </div>
+        
+        <form id="signupForm" class="auth-form active">
+            <div class="input-group"><input type="text" id="signupName" placeholder="Full Name" required></div>
+            <div class="input-group"><input type="email" id="signupEmail" placeholder="Email Address" required></div>
+            <div class="input-group"><input type="tel" id="signupPhone" placeholder="Phone (optional)"></div>
+            <div class="input-group"><input type="password" id="signupPassword" placeholder="Password (min 6 characters)" required></div>
+            <button type="submit" class="auth-submit">Create Account</button>
+            <p style="text-align:center; margin-top:15px">Already have an account? <span id="switchToSignin" style="color:#38bdf8;cursor:pointer">Sign In</span></p>
+        </form>
+        
+        <form id="signinForm" class="auth-form">
+            <div class="input-group"><input type="email" id="signinEmail" placeholder="Email Address" required></div>
+            <div class="input-group"><input type="password" id="signinPassword" placeholder="Password" required></div>
+            <button type="submit" class="auth-submit">Sign In</button>
+            <p style="text-align:center; margin-top:15px">New user? <span id="switchToSignup" style="color:#38bdf8;cursor:pointer">Create Account</span></p>
+            <p style="text-align:center; margin-top:10px;">
+                <a href="#" id="forgotPasswordLink" style="color:#38bdf8; text-decoration:none; font-size:0.85rem;">Forgot Password?</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast">Welcome!</div>
+
+<script src="script.js"></script>
+</body>
+</html>
